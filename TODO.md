@@ -1,6 +1,6 @@
 
 - limiter erreur afficher. (non)
--
+- directive et label.
 
 Suggestion :
 - mpRIJtype uint32_t -> uint8_t pour les registres/opcode ?

@@ -14,14 +14,40 @@ make all
 
 ## To run
 
+### Simple mode
+
 ```sh
-./sources/mips ./tests/test5.txt
-./sources/mips ./tests/test6.txt
-./sources/mips ./tests/test6.txt -step
-./sources/mips # Interactive mode, try:
-               # addi $a0, $0, 0x1A
-               # exit
+./mips ./tests/test5.txt
+./mips ./tests/test6.txt
 ```
+
+![Simple mode](report/MIPS-mpEmulator-ModeSimple.png)
+
+### Compilation errors
+
+```sh
+./mips ./tests/test3.txt
+```
+
+![Example of errors](report/MIPS-mpError-exemple.png)
+
+### Step by step
+
+```sh
+./mips ./tests/test6.txt -step
+```
+
+![Step-by-step mode](report/MIPS-mpEmulator-ModePasPas.png)
+
+### Interactive
+
+```sh
+./mips
+# addi $a0, $0, 0x1A
+# exit
+```
+
+![Interactive mode](report/MIPS-mpEmulator-ModeInteractif.png)
 
 ## To clean
 
