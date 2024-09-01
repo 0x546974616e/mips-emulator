@@ -1,0 +1,9 @@
+# Fichier banque de test pour l emulateur MIPS
+
+ADDI $v0, $zero, 1           # le registre v0 prend la valeur 1
+ADD  $v1, $v0, 4             # v1 <- 1 + 4 = 5
+SW   $v0, -4($sp)              # a0 prend la valeur 5 (2e valeur du tableau qui commence à v0)
+ADDI $a1, $zero, 7           # a1 <- 7
+AND  $a2, $v1, $a1           # a2 prend la valeur 5 & 7 = 5 (& = 'ET bit à bit')
+ADDI $a3, $zero, 65535       # a3 <- 65535 = 1111 1111 1111 1111
+MULT  $a3, $a3               # lo <- 4 294 836 225 = 1111 1111 1111 1110 0000 0000 0000 0001 (32 premiers bits)

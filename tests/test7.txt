@@ -1,0 +1,6 @@
+addi $t1, $0, 0x7FFF
+addi $t2, $0, 0xFFFF
+mult $t1, $t2
+mflo $t3
+sw $t3, 0($sp)
+addi $sp, $sp, -4

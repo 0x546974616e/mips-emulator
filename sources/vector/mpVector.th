@@ -1,0 +1,127 @@
+#ifdef mpTYPE
+
+#include <stdlib.h>
+#include <stddef.h>
+#include <stdbool.h>
+
+/**
+ * On définit des opérations de concaténations.
+ */
+#ifndef mpVECTOR_Concat1
+#define mpVECTOR_Concat1(name, type) \
+    mpVector##name##_##type
+#endif
+
+#ifndef mpVECTOR_Concat2
+#define mpVECTOR_Concat2(type) \
+    mpVector_##type
+#endif
+
+#ifndef mpVECTOR_Define1
+#define mpVECTOR_Define1(name, type) \
+    mpVECTOR_Concat1(name, type)
+#endif
+
+#ifndef mpVECTOR_Define2
+#define mpVECTOR_Define2(type) \
+    mpVECTOR_Concat2(type)
+#endif
+
+/**
+ * On définit des "types" usuels.
+ */
+#ifdef mpVECTOR_Struct
+#undef mpVECTOR_Struct
+#endif
+#define mpVECTOR_Struct \
+    mpVECTOR_Define2(mpTYPE)
+
+#ifdef mpVECTOR_Function
+#undef mpVECTOR_Function
+#endif
+#define mpVECTOR_Function(name) \
+    mpVECTOR_Define1(name, mpTYPE)
+
+/**
+ * On définit la capacité minimal d'un vecteur.
+ */
+#ifndef mpVECTOR_MinCapacity
+#define mpVECTOR_MinCapacity 8u
+#endif
+
+/**
+ * @param data     Représente les données allouées dynamiquement.
+ * @param size     Taille courante du vecteur.
+ * @param capacity Taille maximale du vecteur.
+ */
+typedef struct
+{
+    mpTYPE* data;
+    size_t  size;
+    size_t  capacity;
+}
+mpVECTOR_Struct;
+
+/**
+ * mpVectorInit_type :
+ * Initialise un vecteur déclaré localement ou statiquement.
+ * Alloue dynamiquement les données du vecteur et met la taille
+ * à zéro.
+ *
+ * @param[in-out] vector Vecteur à initialiser.
+ * @return               Succès.
+ *
+ * @pre  @vector != NULL.
+ * @post Ne pas oublier d'appeler Free une fois fini !
+ */
+bool
+mpVECTOR_Function(Init)(
+    mpVECTOR_Struct* vector);
+
+/**
+ * mpVectorFree_type :
+ * Libère de la mémoire les données du vecteur.
+ *
+ * @param[in-out] vector Vecteur à supprimer.
+ *
+ * @pre  @vector != NULL.
+ * @post @vector.data == NULL.
+ */
+void
+mpVECTOR_Function(Free)(
+    mpVECTOR_Struct* vector);
+
+/**
+ * mpVectorResize_type :
+ * Redimensionne un vecteur. Le vecteur peut être non initialisé,
+ * dans on "malloc", sinon on "realloc".
+ *
+ * @param[in-out] vector   Vecteur à redimensionner.
+ * @param[in]     capacity Nouvelle capacité du vecteur.
+ * @return               Succès.
+ *
+ * @pre  @vector != NULL.
+ */
+bool
+mpVECTOR_Function(Resize)(
+    mpVECTOR_Struct* vector,
+    size_t           capacity);
+
+/**
+ * Ajoute un élément à la fin du vecteur.
+ * Augmente la capacité si nécessaire.
+ *
+ * @param[in-out] vector  Vecteur à modifier.
+ * @param[in]     value   Valeur par référence.
+ * @return        success
+ *
+ * @pre
+ *     - @vector != NULL.
+ *     - @value != NULL.
+ */
+bool
+mpVECTOR_Function(Add)(
+    mpVECTOR_Struct* vector,
+    mpTYPE*          value);
+
+#endif /* mpTYPE */

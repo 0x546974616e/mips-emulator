@@ -1,0 +1,189 @@
+#ifdef mpTYPE
+
+/**
+ * mpVectorInit_type :
+ * Initialise un vecteur déclaré localement ou statiquement.
+ * Alloue dynamiquement les données du vecteur et met la taille
+ * à zéro.
+ *
+ * @param[in-out] vector Vecteur à initialiser.
+ * @return               Succès.
+ *
+ * @pre  @vector != NULL.
+ * @post Ne pas oublier d'appeler Free une fois fini !
+ */
+bool
+mpVECTOR_Function(Init) (
+    mpVECTOR_Struct* vector
+) {
+    /*
+     * On initiale des données à NULL.
+     * (Important pour la suite)
+     */
+    vector->data = NULL;
+
+    /*
+     * On "redimensionne" le vecteur, mais cette méthode
+     * peut aussi initialiser le vecteur si les données
+     * sont à NULL.
+     */
+    return
+        mpVECTOR_Function(Resize)(
+            vector, mpVECTOR_MinCapacity);
+}
+
+/**
+ * mpVectorFree_type :
+ * Libère de la mémoire les données du vecteur.
+ *
+ * @param[in-out] vector Vecteur à supprimer.
+ *
+ * @pre  @vector != NULL.
+ * @post @vector.data == NULL.
+ */
+void
+mpVECTOR_Function(Free) (
+    mpVECTOR_Struct* vector
+) {
+    /*
+     * On libère les données de la mémoire on place
+     * NULL à la place.
+     */
+    if (vector->data != NULL)
+    {
+        free(vector->data);
+        vector->data = NULL;
+    }
+
+    /*
+     * On met à zéro la taille et la capacité.
+     */
+    vector->size     = 0u;
+    vector->capacity = 0u;
+}
+
+/**
+ * mpVectorResize_type :
+ * Redimensionne un vecteur. Le vecteur peut être non initialisé,
+ * dans on "malloc", sinon on "realloc".
+ *
+ * @param[in-out] vector   Vecteur à redimensionner.
+ * @param[in]     capacity Nouvelle capacité du vecteur.
+ * @return               Succès.
+ *
+ * @pre  @vector != NULL.
+ */
+bool
+mpVECTOR_Function(Resize) (
+    mpVECTOR_Struct* vector,
+    size_t           capacity
+) {
+    bool success = true;
+
+    /*
+     * On ne tolère pas une capacité à 0.
+     */
+    if (capacity == 0u)
+    {
+        capacity = mpVECTOR_MinCapacity;
+    }
+
+    /*
+     * Si les données du vecteur sont à NULL.
+     */
+    if (vector->data == NULL)
+    {
+        /*
+         * On alloue dynamiquement les données.
+         */
+        vector->data = (mpTYPE*) malloc(
+            sizeof(mpTYPE) * capacity);
+
+        /*
+         * On vérifie si malloc a réussi.
+         */
+        success = vector->data != NULL;
+
+        /*
+         * On initialise les membres du vecteur.
+         */
+        vector->size     = 0u;
+        vector->capacity = success ? capacity : 0u;
+    }
+
+    /*
+     * Si les données du vecteur ne sont pas à NULL
+     * et que la capacité n'est pas la même.
+     */
+    else if (capacity != vector->capacity)
+    {
+        /*
+         * On réalloue les données avec la nouvelle capacité.
+         */
+        mpTYPE* data = (mpTYPE*) realloc(
+            vector->data, sizeof(mpTYPE) * capacity);
+
+        /*
+         * On vérifie si realloc a réussi.
+         */
+        success = data != NULL;
+
+        /*
+         * Si tout est ok on redéfinit les membres.
+         */
+        if (success)
+        {
+            vector->data     = data;
+            vector->capacity = capacity;
+            if (vector->size > capacity)
+                vector->size = capacity;
+        }
+    }
+
+    return success;
+}
+
+/**
+ * Ajoute un élément à la fin du vecteur.
+ * Augmente la capacité si nécessaire.
+ *
+ * @param[in-out] vector  Vecteur à modifier.
+ * @param[in]     value   Valeur par référence.
+ * @return        success
+ *
+ * @pre
+ *     - @vector != NULL.
+ *     - @value != NULL.
+ */
+bool
+mpVECTOR_Function(Add) (
+    mpVECTOR_Struct* vector,
+    mpTYPE*          value
+) {
+    bool success = true;
+
+    /*
+     * Si la taille du vecteur est égale à sa capacité max,
+     * alors on double la taille du vecteur.
+     */
+    if (vector->size >= vector->capacity)
+    {
+        success =
+            mpVECTOR_Function(Resize)(
+                vector, vector->capacity * 2u);
+    }
+
+    /*
+     * Si tout est ok, alors on ajoute l'élément au vecteur
+     * et on incrémente la taille de 1.
+     */
+    if (success)
+    {
+        vector->data[vector->size] = *value;
+        vector->size++;
+    }
+
+    return success;
+}
+
+#endif /* mpTYPE */

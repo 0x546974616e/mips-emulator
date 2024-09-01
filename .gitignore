@@ -1,0 +1,13 @@
+*.o
+*.d
+mips
+
+# Swap
+.*.swp
+
+# Session
+Session.vim
+Sessionx.vim
+
+# Temporary
+*~

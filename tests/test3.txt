@@ -1,0 +1,31 @@
+
+
+DJZAJDZAOJ JODZA	JJDOZANDZAONOOO DKZAODZAOJOZAD
+
+    #
+ADDI $2,    .text       65439   $3, -200
+   SLL    $1	,$2 , 2 # daz
+   SLL    $1], -033, 12 1DZADZA       
+FH
+	# Daz     # dzanp
+ADD $2,$3,09183 01372 $4 # da
+# salut ca va  dzao za
+    SUB  $1,	$2, $0 +0x43AG
+,
+          A   $32   .     .dzajdpa
+.d
+  ADD $01,,$-1 $  ,-0$($B),,, +7654 -0
+DAZDZA: - --0 0x08 -0X01A -0x  -00 $d3A
+
+#Addd $11,$3,$1234567 A A A A de # dadz
+#Addd $11,$3,$1234567 A A , ,,  # dadz
+#Addd $11,$3,$1234567 A A A A   ,      # dadz
+#Addd $11,$3,$1234567 A A ,A  # dad
+
+addi $1,1
+addi $1,$2
+
+dza
+
+
+}

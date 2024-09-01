@@ -1,0 +1,82 @@
+# Fichier banque de test pour l émulateur MIPS 
+
+ADDI $v0, $zero, 1           # le registre v0 prend la valeur 1
+ADD  $v1, $v0, 4             # v1 <- 1 + 4 = 5
+SW   $a0, 4(v0)              # a0 prend la valeur 5 (2e valeur du tableau qui commence à v0)
+ADDI $a1, $zero, 7           # a1 <- 7
+AND  $a2, $a0, $a1           # a2 prend la valeur 5 & 7 = 5 (& = 'ET bit à bit')
+ADDI $a3, $zero, 65535       # a3 <- 65535 = 1111 1111 1111 1111
+MULT  $a3, $a3               # lo <- 4 294 836 225 = 1111 1111 1111 1110 0000 0000 0000 0001 (32 premiers bits)
+					         # hi <- 0 (bits restant à gauche)
+NOP
+BEQ $v1, $a0, 8 	         # branchement à PC + 8 car v1 = a0 
+ADDI $t0, $zero, -26         # t0 doit rester à 0 car le PC est passé directement à l instruction suivante
+BGTZ $a3, 8                  # branchement à PC + 8 car a3 > 0
+ADDI $t1, $zero, -26         # t1 doit rester à 0 
+ADDI $s0, $zero, -25         # s0 prend la valeur -25
+BLEZ $s0, 8                  # branchement à PC + 8 car s0 = -25 <= 0
+ADDI $t2, $zero, -26         # t2 doit rester à 0 car l instruction n est pas lue
+BNE $a1, $a5, 8              # branchement à PC + 8 car a1 != a2
+ADDI $t3, $zero, -26         # t3 doit rester à 0
+
+ADDI $t4, $zero, 43          # t4 prend la valeur 43
+JR, $t4                      # le PC saute à l adresse 43
+ADDI $t5, $zero, 18          # t5 prend la valeur 18
+
+SUB $s1, $a1, $a2            # s& <- a1 - a2 = 7 - 5 = 2
+DIV $s0, $a2                 # lo <- -5
+					         # hi <- 0
+LUI $s2, 38                  # les 16 octets de la valeur im = 38 sont placés dans les 16 bits de poids fort de s2 
+					         # et les bits de poids faible sont mis à 0
+					         # s2 <- 0000 0000 0010 0110 0000 0000 0000 0000 = 2490368
+LW $s0, 8($s1)               # s1 + 8 = s3 prend la valeur -25
+MFHI $a1                     # le registre hi prend la valeur 7
+MFLO $v0 			         # le registre lo prend la valeur 1
+OR $s4, $v1, $a0             # le registre s4 prend la valeur 7 (0111 OR 0101 = 0111)
+XOR $s5, $v1, $a0            # le registre s5 prend la valeur 5 (0111 XOR 0101 = 0110)
+ADDI $s6, $zero, 38          # s6 <- 38 = 0000 0000 0010 0110
+ROTR $s7, $s6, 2             # s6 <- 32 777 = 1000 0000 0000 1001 (rotation de 2 par la droite)
+SLL $t8, $s6, 2              # t8 <- 152 = 1001 1000
+SRL $t9, $s6, 2              # t9 <- 9 = 0000 1001
+SLT $k0, $s6, $t8            # k0 prend la valeur 1 car 38 (dans s6) < 152 (dans t8)
+
+J 24                         # le PC saute à l instruction 24
+
+SYSCALL
+JAL
+
+Résultat final attendu :
+zero 0
+at 0
+v0 1
+v1 5
+a0 5
+a1 7
+a2 5
+a3 65535
+t0 0
+t1 0
+t2 0
+t3 43
+t4 18
+s0 -25
+s1 2
+s2 2490368
+s3 -25
+s4 7
+s5 5
+s6 38
+s7 32777
+t8 152
+t9 9
+k0 1
+
+#1 en premier :
+hi 2
+lo 3 755 744 309
+#2 ensuite :
+hi 0
+lo -5
+#3 enfin :
+hi 7
+lo 1

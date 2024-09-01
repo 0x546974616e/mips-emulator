@@ -1,0 +1,27 @@
+ADDI $t0, $0, 0
+ADDI $t1, $0, 10
+ADDI $t2, $0, 0b0 #
+
+BEQ $t0, $t1, 6 # ---> 2D
+    SW $t0, 0($sp)
+    ADDI $sp, $sp, -0x8
+    ADD $t2, $t2, $t0
+    ADDI $t0, $t0, 1
+    # BEQ $0, $0, -3
+    J 3
+ADDI $t1, $0, 0
+
+lui $16, 0xABCD
+add $16, $16, $T2
+rotr $16, $16, 4
+
+SW $16, -4($sp)
+LW $17, -4($sp)
+
+addi $20, $0, 13
+addi $21, $zero, 5
+div $20, $21
+
+addi $s0,$0,2
+addi $s1,$0,4
+#jr $s0
